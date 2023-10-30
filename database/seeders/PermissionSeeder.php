@@ -14,7 +14,8 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         Permission::create([
-            'name' => 'test_permission',
+            'code' => 'test_permission',
+            'name' => 'Test Permission',
             'description' => 'test permission'
         ]);
     }

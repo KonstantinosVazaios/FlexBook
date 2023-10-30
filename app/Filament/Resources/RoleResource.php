@@ -19,6 +19,11 @@ class RoleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
 
+    public static function canViewAny() : bool 
+    {
+        return auth()->user()->hasRole('developer');
+    }
+    
     public static function canCreate(): bool
     {
         return false;

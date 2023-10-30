@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->float('default_price');
             $table->integer('default_duration');
-            $table->boolean('active');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

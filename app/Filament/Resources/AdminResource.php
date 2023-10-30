@@ -18,25 +18,28 @@ class AdminResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $slug = 'users/admins';
+    protected static ?string $slug = 'groups/admins';
 
-    protected static ?string $navigationGroup = 'Users';
+    protected static ?string $navigationGroup = 'User Groups';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-
-    protected static ?int $navigationSort = 1;
 
     protected static ?string $modelLabel = 'Admin';
 
     protected static ?string $pluralLabel = 'Admins';
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+    
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required()->maxLength(255),
                 Forms\Components\TextInput::make('email')->required()->maxLength(255),
-                Forms\Components\TextInput::make('password')->required()->maxLength(255)->password(true)->hiddenOn('edit'),
+                Forms\Components\TextInput::make('password')->required()->maxLength(255)->password(true),
             ]);
     }
 
@@ -57,6 +60,7 @@ class AdminResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -78,8 +82,8 @@ class AdminResource extends Resource
     {
         return [
             'index' => Pages\ListAdmins::route('/'),
-            'create' => Pages\CreateAdmin::route('/create'),
             'edit' => Pages\EditAdmin::route('/{record}/edit'),
+            'view' => Pages\ViewAdmin::route('/{record}'),
         ];
     }
 

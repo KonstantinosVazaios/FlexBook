@@ -20,15 +20,19 @@ class Store extends Model
         'active'
     ];
 
+    public function holidays()
+    {
+        return $this->hasMany(StoreHoliday::class);
+    }
+
     public function hours()
     {
         return $this->hasMany(StoreHour::class);
     }
 
-    // Used to get Admins & Staff Users
     public function users()
     {
-        return $this->belongsToMany(User::class, 'store_user');
+        return $this->belongsToMany(User::class, 'store_user')->withPivot('role_id');
     }
 
     public function services()

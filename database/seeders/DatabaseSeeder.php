@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Setting;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +20,11 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PermissionRoleSeeder::class,
             RoleUserSeeder::class,
+        ]);
+
+        Setting::create([
+            "parameter" => "BOOKING_INTERVAL",
+            "value" => "30"
         ]);
     }
 }

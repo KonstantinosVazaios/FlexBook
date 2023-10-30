@@ -22,12 +22,21 @@ class SettingResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function canViewAny() : bool 
+    {
+        return auth()->user()->hasRole('developer');
+    }
+    
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('parameter')->required()->maxLength(255),
+                Forms\Components\TextInput::make('parameter')->readOnly(true),
                 Forms\Components\TextInput::make('value')->required()->maxLength(255),
             ]);
     }
@@ -46,11 +55,6 @@ class SettingResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
     
@@ -58,8 +62,7 @@ class SettingResource extends Resource
     {
         return [
             'index' => Pages\ListSettings::route('/'),
-            'create' => Pages\CreateSetting::route('/create'),
-            'edit' => Pages\EditSetting::route('/{record}/edit'),
+            // 'edit' => Pages\EditSetting::route('/{record}/edit'),
         ];
     }    
 }

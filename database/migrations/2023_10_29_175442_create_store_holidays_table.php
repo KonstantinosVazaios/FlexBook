@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('store_hours', function (Blueprint $table) {
+        Schema::create('store_holidays', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('store_id');
-            $table->integer('day');
+            $table->date('date');
             $table->boolean('is_open');
             $table->time('open')->nullable();
             $table->time('close')->nullable();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('store_hours');
+        Schema::dropIfExists('store_holidays');
     }
 };

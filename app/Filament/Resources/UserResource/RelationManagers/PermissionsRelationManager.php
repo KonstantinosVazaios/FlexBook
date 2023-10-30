@@ -1,14 +1,18 @@
 <?php
 
-namespace App\Filament\Resources\PermissionResource\RelationManagers;
+namespace App\Filament\Resources\UserResource\RelationManagers;
 
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class RolesRelationManager extends RelationManager
+class PermissionsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'roles';
+    protected static string $relationship = 'permissions';
 
     // public function form(Form $form): Form
     // {
@@ -45,10 +49,5 @@ class RolesRelationManager extends RelationManager
                     // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-    
-    public function isReadOnly(): bool
-    {
-        return false;
     }
 }

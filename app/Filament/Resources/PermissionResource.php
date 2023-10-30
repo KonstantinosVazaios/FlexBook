@@ -19,6 +19,11 @@ class PermissionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-adjustments-vertical';
 
+    public static function canViewAny() : bool 
+    {
+        return auth()->user()->hasRole('developer');
+    }
+
     public static function canCreate(): bool
     {
         return false;
@@ -28,6 +33,7 @@ class PermissionResource extends Resource
     {
         return $infolist
             ->schema([
+                TextEntry::make('code'),
                 TextEntry::make('name'),
                 TextEntry::make('description')
                     ->columnSpanFull(),
@@ -38,6 +44,10 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('code')
+                    ->searchable()
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -57,12 +67,12 @@ class PermissionResource extends Resource
             RelationManagers\RolesRelationManager::class,
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListPermissions::route('/'),
             'view' => Pages\ViewPermission::route('/{record}'),
         ];
-    }    
+    }
 }

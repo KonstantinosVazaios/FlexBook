@@ -1,10 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\PermissionResource\RelationManagers;
+namespace App\Filament\Resources\UserResource\RelationManagers;
 
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RolesRelationManager extends RelationManager
 {
@@ -32,7 +36,7 @@ class RolesRelationManager extends RelationManager
             ])
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
-                Tables\Actions\AttachAction::make()->preloadRecordSelect(),
+                Tables\Actions\AttachAction::make()->recordSelectOptionsQuery(fn (Builder $query) => $query->where('code', '!=', 'developer'))->preloadRecordSelect(),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
@@ -45,10 +49,5 @@ class RolesRelationManager extends RelationManager
                     // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-    
-    public function isReadOnly(): bool
-    {
-        return false;
     }
 }

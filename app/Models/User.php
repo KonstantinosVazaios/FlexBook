@@ -66,14 +66,14 @@ class User extends Authenticatable implements FilamentUser
 
     public function hasRole($role)
     {
-        $this->roles()->where('name', $role)->get()->isNotEmpty();
+        return $this->roles()->where('code', $role)->get()->isNotEmpty();
     }
 
     public function hasPermission($permission)
     {
         return 
-        $this->role->permissions()->where('name', $permission)->get()->isNotEmpty() ||
-        $this->permissions()->where('name', $permission)->get()->isNotEmpty();
+        $this->role->permissions()->where('code', $permission)->get()->isNotEmpty() ||
+        $this->permissions()->where('code', $permission)->get()->isNotEmpty();
     }
 
     public function hours()
@@ -84,6 +84,11 @@ class User extends Authenticatable implements FilamentUser
     public function leaves()
     {
         return $this->hasMany(WorkLeaves::class);
+    }
+
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class)->withPivot('role_id');
     }
 
     // Staff Users have many services
