@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('service_id');
             $table->unsignedBigInteger('users');
-            $table->float('override_price');
-            $table->integer('override_duration');
+            $table->float('override_price')->nullable();
+            $table->integer('override_duration')->nullable();
             
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
             $table->foreign('users')->references('id')->on('users')->onDelete('cascade');

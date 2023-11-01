@@ -19,9 +19,17 @@ class StoreHour extends Model
 
     protected $fillable = [
         'day',
+        'is_open',
         'open',
         'close',
     ];
+
+    public function getDayLabelAttribute()
+    {
+        $days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        return $days[$this->day];
+    }
 
     public function store()
     {

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Service extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -19,7 +21,8 @@ class Service extends Model
 
     public function stores()
     {
-        return $this->belongsToMany(Store::class, 'service_store');
+        return $this->belongsToMany(Store::class, 'service_store')
+            ->withPivot('override_price', 'override_duration');
     }
 
     public function users()

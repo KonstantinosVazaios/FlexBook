@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('/', 'welcome');
+
+Route::get('test', function () {
+    $tt = User::whereHas('roles', function (\Illuminate\Database\Eloquent\Builder $query) {
+        $query->where('code', 'staff');
+    })->get();
+    dd($tt);
+});
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

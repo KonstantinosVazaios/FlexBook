@@ -88,7 +88,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function stores()
     {
-        return $this->belongsToMany(Store::class)->withPivot('role_id');
+        return $this->belongsToMany(Store::class)->withPivot('id', 'role_id');
     }
 
     // Staff Users have many services

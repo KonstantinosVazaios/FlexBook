@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('store_id');
             $table->integer('day');
-            $table->boolean('is_open');
+            $table->boolean('is_open')->default(true);
             $table->time('open')->nullable();
             $table->time('close')->nullable();
 

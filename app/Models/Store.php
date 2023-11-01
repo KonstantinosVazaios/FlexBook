@@ -20,24 +20,25 @@ class Store extends Model
         'active'
     ];
 
-    public function holidays()
+    public function storeHolidays()
     {
         return $this->hasMany(StoreHoliday::class);
     }
 
-    public function hours()
+    public function storeHours()
     {
         return $this->hasMany(StoreHour::class);
     }
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'store_user')->withPivot('role_id');
+        return $this->belongsToMany(User::class, 'store_user')->withPivot('id', 'role_id');
     }
 
     public function services()
     {
-        return $this->belongsToMany(Service::class, 'service_store');
+        return $this->belongsToMany(Service::class, 'service_store')
+            ->withPivot('override_price', 'override_duration');
     }
 
     public function reservations()

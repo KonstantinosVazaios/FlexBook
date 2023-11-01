@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float('default_price');
             $table->integer('default_duration');
             $table->boolean('active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

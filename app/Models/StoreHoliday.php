@@ -10,9 +10,10 @@ class StoreHoliday extends Model
     use HasFactory;
 
     protected $fillable = [
-        'day',
+        'date',
+        'is_open',
         'open',
-        'close',
+        'close'
     ];
 
     public function store()
