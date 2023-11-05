@@ -21,10 +21,10 @@ class StoreResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
     protected static ?int $navigationSort = 1;
-    
+    protected bool $allowsDuplicates = true;
     public static function canCreate(): bool
     {
-        return auth()->user()->hasRole('developer');
+        return auth()->user()->hasRoles('developer');
     }
 
     public static function form(Form $form): Form

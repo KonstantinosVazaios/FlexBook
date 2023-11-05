@@ -46,8 +46,8 @@ class ServicesRelationManager extends RelationManager
                     ->preloadRecordSelect()
                     ->form(fn (AttachAction $action): array => [
                         $action->getRecordSelect(),
-                        Forms\Components\TextInput::make('override_price')->required()->numeric(),
-                        Forms\Components\TextInput::make('override_duration')->required()->numeric(),
+                        Forms\Components\TextInput::make('override_price')->numeric(),
+                        Forms\Components\TextInput::make('override_duration')->numeric(),
                     ])
             ])
             ->actions([

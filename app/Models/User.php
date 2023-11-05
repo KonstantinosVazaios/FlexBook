@@ -64,31 +64,31 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsToMany(Permission::class);
     }
 
-    public function hasRole($role)
+    public function hasRoles(...$roles)
     {
-        return $this->roles()->where('code', $role)->get()->isNotEmpty();
+        return $this->roles()->whereIn('code', $roles)->get()->isNotEmpty();
     }
 
     public function hasPermission($permission)
     {
-        return 
+        return
         $this->role->permissions()->where('code', $permission)->get()->isNotEmpty() ||
         $this->permissions()->where('code', $permission)->get()->isNotEmpty();
     }
 
-    public function hours()
+    public function workHours()
     {
         return $this->hasMany(WorkHour::class);
     }
 
-    public function leaves()
+    public function workLeaves()
     {
-        return $this->hasMany(WorkLeaves::class);
+        return $this->hasMany(WorkLeave::class);
     }
 
     public function stores()
     {
-        return $this->belongsToMany(Store::class)->withPivot('id', 'role_id');
+        return $this->belongsToMany(Store::class, 'store_user')->withPivot('id', 'role_id');
     }
 
     // Staff Users have many services

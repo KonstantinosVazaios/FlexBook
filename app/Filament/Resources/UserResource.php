@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -22,11 +23,11 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = 0;
 
-    public static function canViewAny() : bool 
+    public static function canViewAny(): bool
     {
-        return auth()->user()->hasRole('developer');
+        return auth()->user()->hasRoles('developer');
     }
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -92,6 +93,10 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
+            RelationGroup::make('Hours & Leaves', [
+                RelationManagers\WorkHoursRelationManager::class,
+                RelationManagers\WorkLeavesRelationManager::class,
+            ]),
             RelationManagers\RolesRelationManager::class,
             RelationManagers\PermissionsRelationManager::class,
         ];

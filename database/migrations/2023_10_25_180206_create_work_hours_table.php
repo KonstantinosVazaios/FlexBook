@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('work_hours', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('store_id');
             $table->integer('day');
-            $table->time('open');
-            $table->time('close');
+            $table->boolean('off_work');
+            $table->time('start')->nullable();
+            $table->time('end')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->timestamps();
         });
     }

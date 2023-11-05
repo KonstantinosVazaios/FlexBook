@@ -13,7 +13,7 @@ class AdminsRelationManager extends RelationManager
     protected static string $relationship = 'users';
     protected static ?string $pluralModelLabel = 'Admins';
     protected bool $allowsDuplicates = true;
-    
+
     public function table(Table $table): Table
     {
         return $table
@@ -22,6 +22,7 @@ class AdminsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
             ])
+            ->allowDuplicates(true)
             ->filters([
                 //
             ])
@@ -32,7 +33,7 @@ class AdminsRelationManager extends RelationManager
                     }))
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['role_id'] = Role::where('code', 'admin')->first()->id;
-                 
+
                         return $data;
                     })
                     ->preloadRecordSelect(),

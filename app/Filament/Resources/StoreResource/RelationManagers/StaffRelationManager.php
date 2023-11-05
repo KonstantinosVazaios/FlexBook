@@ -16,7 +16,7 @@ class StaffRelationManager extends RelationManager
     protected static string $relationship = 'users';
     protected static ?string $pluralModelLabel = 'Staff';
     protected bool $allowsDuplicates = true;
-    
+
     public function form(Form $form): Form
     {
         return $form
@@ -35,6 +35,7 @@ class StaffRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
             ])
+            ->allowDuplicates(true)
             ->filters([
                 //
             ])
@@ -45,7 +46,7 @@ class StaffRelationManager extends RelationManager
                     }))
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['role_id'] = Role::where('code', 'staff')->first()->id;
-                
+
                         return $data;
                     })
                     ->preloadRecordSelect(),

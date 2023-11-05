@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\StoreResource\RelationManagers;
+namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -8,20 +8,25 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StoreHolidaysRelationManager extends RelationManager
+class WorkLeavesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'storeHolidays';
+    protected static string $relationship = 'workLeaves';
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return $ownerRecord->hasRoles('staff');
+    }
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\DatePicker::make('date')->native(false)->required(),
-                Forms\Components\TimePicker::make('open')->native(false)->seconds(false)->minutesStep(15),
-                Forms\Components\TimePicker::make('close')->native(false)->seconds(false)->minutesStep(15),
-                Forms\Components\Toggle::make('is_open')->required(),
+                Forms\Components\DatePicker::make('date')
+                    ->native(false)
+                    ->required()
             ]);
     }
 
@@ -31,9 +36,6 @@ class StoreHolidaysRelationManager extends RelationManager
             ->recordTitleAttribute('date')
             ->columns([
                 Tables\Columns\TextColumn::make('date'),
-                Tables\Columns\IconColumn::make('is_open')->boolean(),
-                Tables\Columns\TextColumn::make('open'),
-                Tables\Columns\TextColumn::make('close'),
             ])
             ->filters([
                 //

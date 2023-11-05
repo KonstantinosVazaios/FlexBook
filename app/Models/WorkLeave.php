@@ -9,7 +9,9 @@ class WorkLeave extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'leave_date'];
+    protected $fillable = [
+        'date',
+    ];
 
     public function user()
     {

@@ -24,7 +24,7 @@ class SettingResource extends Resource
 
     public static function canViewAny() : bool 
     {
-        return auth()->user()->hasRole('developer');
+        return auth()->user()->hasRoles('developer');
     }
     
     public static function canCreate(): bool

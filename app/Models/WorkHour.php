@@ -18,13 +18,28 @@ class WorkHour extends Model
     // 6 SATURDAY
 
     protected $fillable = [
+        'store_id',
         'day',
-        'open',
-        'close',
+        'off_work',
+        'start',
+        'end',
     ];
+
+    public function getDayLabelAttribute()
+    {
+        $days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        return $days[$this->day];
+    }
+
+    public function getStoreNameAttribute()
+    {
+        return Store::find($this->store_id)->name;
+    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    
 }

@@ -1,23 +1,35 @@
 <?php
 
-namespace App\Filament\Resources\StoreResource\RelationManagers;
+namespace App\Filament\Resources\UserResource\RelationManagers;
 
+use App\Models\Store;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StoreHoursRelationManager extends RelationManager
+class WorkHoursRelationManager extends RelationManager
 {
-    protected static string $relationship = 'storeHours';
+    protected static string $relationship = 'workHours';
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return $ownerRecord->hasRoles('staff');
+    }
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('store_id')
+                    ->label('Store')
+                    ->options(Store::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->required(),
                 Forms\Components\Select::make('day')
                     ->options([
                         '1' => 'Monday',
@@ -28,21 +40,22 @@ class StoreHoursRelationManager extends RelationManager
                         '6' => 'Saturday',
                         '0' => 'Sunday',
                     ])->required(),
-                Forms\Components\TimePicker::make('open')->native(false)->seconds(false)->minutesStep(15),
-                Forms\Components\TimePicker::make('close')->native(false)->seconds(false)->minutesStep(15),
-                Forms\Components\Toggle::make('is_open')->required(),
+                Forms\Components\TimePicker::make('start')->native(false)->seconds(false)->minutesStep(15),
+                Forms\Components\TimePicker::make('end')->native(false)->seconds(false)->minutesStep(15),
+                Forms\Components\Toggle::make('off_work')->required(),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('dayLabel')
+            ->recordTitleAttribute('day')
             ->columns([
-                Tables\Columns\TextColumn::make('dayLabel'),
-                Tables\Columns\IconColumn::make('is_open')->boolean(),
-                Tables\Columns\TextColumn::make('open'),
-                Tables\Columns\TextColumn::make('close'),
+                Tables\Columns\TextColumn::make('storeName')->label('Store'),
+                Tables\Columns\TextColumn::make('dayLabel')->label('Day'),
+                Tables\Columns\IconColumn::make('off_work')->boolean(),
+                Tables\Columns\TextColumn::make('start'),
+                Tables\Columns\TextColumn::make('end'),
             ])
             ->filters([
                 //
