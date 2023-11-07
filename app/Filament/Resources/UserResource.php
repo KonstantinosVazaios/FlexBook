@@ -13,11 +13,17 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
+    protected static ?string $modelLabel = 'Χρήστη';
+    protected static ?string $pluralModelLabel = 'Χρήστες';
+
+    protected static ?string $navigationLabel = 'Χρήστες';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
@@ -25,7 +31,24 @@ class UserResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->hasRoles('developer');
+        return auth()->user()->hasRoles('developer', 'admin');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        if ($record->hasRoles('developer')) {
+            return false;
+        }
+
+        if (auth()->user()->hasRoles('developer')) {
+            return true;
+        }
+
+        if ($record->hasRoles('admin') && auth()->user()->id !== $record->id) {
+            return false;
+        }
+        
+        return true;
     }
 
     public static function form(Form $form): Form
@@ -62,10 +85,12 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -93,9 +118,12 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationGroup::make('Hours & Leaves', [
+            RelationGroup::make('Ώρες Εργασίας & Άδειες', [
                 RelationManagers\WorkHoursRelationManager::class,
                 RelationManagers\WorkLeavesRelationManager::class,
+            ]),
+            RelationGroup::make('Υπηρεσίες', [
+                RelationManagers\ServicesRelationManager::class,
             ]),
             RelationManagers\RolesRelationManager::class,
             RelationManagers\PermissionsRelationManager::class,

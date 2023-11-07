@@ -12,16 +12,38 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StoreResource extends Resource
 {
     protected static ?string $model = Store::class;
 
+    protected static ?string $navigationLabel = 'Καταστήματα';
+
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
     protected static ?int $navigationSort = 1;
     protected bool $allowsDuplicates = true;
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasRoles('developer', 'admin');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        if (auth()->user()->hasRoles('developer')) {
+            return true;
+        }
+
+        if (auth()->user()->stores()->wherePivot('role_id', 2)->get()->isNotEmpty()) {
+            return true;
+        }
+        
+        return false;
+    }
+
     public static function canCreate(): bool
     {
         return auth()->user()->hasRoles('developer');
@@ -96,15 +118,17 @@ class StoreResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationGroup::make('Admins & Staff', [
+            RelationGroup::make('Προσωπικό', [
                 RelationManagers\AdminsRelationManager::class,
                 RelationManagers\StaffRelationManager::class,
             ]),
-            RelationGroup::make('Hours & Holidays', [
+            RelationGroup::make('Ωράρια & Αργίες', [
                 RelationManagers\StoreHoursRelationManager::class,
                 RelationManagers\StoreHolidaysRelationManager::class,
             ]),
-            RelationManagers\ServicesRelationManager::class,
+            RelationGroup::make('Υπηρεσίες', [
+                RelationManagers\ServicesRelationManager::class,
+            ]),
         ];
     }
 

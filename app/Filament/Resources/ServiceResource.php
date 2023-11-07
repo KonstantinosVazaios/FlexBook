@@ -17,9 +17,16 @@ class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
 
+    protected static ?string $navigationLabel = 'Υπηρεσίες';
+
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?int $navigationSort = 2;
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasRoles('developer', 'admin');
+    }
 
     public static function form(Form $form): Form
     {

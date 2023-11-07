@@ -7,12 +7,18 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class AdminsRelationManager extends RelationManager
 {
     protected static string $relationship = 'users';
     protected static ?string $pluralModelLabel = 'Admins';
     protected bool $allowsDuplicates = true;
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return auth()->user()->hasRoles('developer');
+    }
 
     public function table(Table $table): Table
     {

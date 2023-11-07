@@ -8,21 +8,17 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PermissionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'permissions';
 
-    // public function form(Form $form): Form
-    // {
-    //     return $form
-    //         ->schema([
-    //             Forms\Components\TextInput::make('name')
-    //                 ->required()
-    //                 ->maxLength(255),
-    //         ]);
-    // }
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return auth()->user()->hasRoles('developer');
+    }
 
     public function table(Table $table): Table
     {

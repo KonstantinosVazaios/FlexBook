@@ -22,19 +22,19 @@ class ListUsers extends ListRecords
     public function getTabs(): array
     {
         return [
-            'Admins' => Tab::make()
+            'Admins' => Tab::make("Διαχειριστές")
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('roles', function (Builder $query) {
                     $query->where('code', 'admin');
                 })),
-            'Staff' => Tab::make()
+            'Staff' => Tab::make("Εργαζόμενοι")
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('roles', function (Builder $query) {
                     $query->where('code', 'staff');
                 })),
-            'Clients' => Tab::make()
+            'Clients' => Tab::make("Πελάτες")
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('roles', function (Builder $query) {
                     $query->where('code', 'client');
                 })),
-            'No Role' => Tab::make()
+            'No Role' => Tab::make("Χωρίς Ρόλο")
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereDoesntHave('roles')),
         ];
     }
