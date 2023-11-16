@@ -1,0 +1,436 @@
+{
+    "store": {
+        "name": "Los Barberos",
+        "description": "",
+        "address": "Ζαχαρία Παπαντωνίου 19, Αθήνα 111 45",
+        "telephone": "21 0832 0188",
+        "email": "losbarberos@gmail.com",
+        "active": true
+    },
+    "store_hours": [
+        {
+            "day": 1,
+            "is_open": true,
+            "open": "08:00",
+            "close": "20:00"
+        },
+        {
+            "day": 2,
+            "is_open": true,
+            "open": "08:00",
+            "close": "20:00"
+        },
+        {
+            "day": 3,
+            "is_open": true,
+            "open": "08:00",
+            "close": "20:00"
+        },
+        {
+            "day": 4,
+            "is_open": true,
+            "open": "08:00",
+            "close": "20:00"
+        },
+        {
+            "day": 5,
+            "is_open": true,
+            "open": "08:00",
+            "close": "20:00"
+        },
+        {
+            "day": 6,
+            "is_open": true,
+            "open": "09:00",
+            "close": "17:00"
+        },
+        {
+            "day": 0,
+            "is_open": false,
+            "open": null,
+            "close": null
+        }
+    ],
+    "users": [
+        {
+            "name": "Nikos Ferentinos",
+            "telephone": "6936961010",
+            "email": "ferentinos@flexbook.gr",
+            "password": "ferentinos",
+            "roles": ["admin"],
+            "work_hours": []
+        },
+        {
+            "name": "Efraim Tsoronis",
+            "telephone": "6987344944",
+            "email": "tsoronis@flexbook.gr",
+            "password": "12345",
+            "roles": ["staff"],
+            "work_hours": [
+                {
+                    "store_id": 1,
+                    "day": 1,
+                    "off_work": true,
+                    "start": null,
+                    "end": null
+                },
+                {
+                    "store_id": 1,
+                    "day": 2,
+                    "off_work": false,
+                    "start": "08:00",
+                    "end": "16:00"
+                },
+                {
+                    "store_id": 1,
+                    "day": 3,
+                    "off_work": false,
+                    "start": "08:00",
+                    "end": "16:00"
+                },
+                {
+                    "store_id": 1,
+                    "day": 4,
+                    "off_work": false,
+                    "start": "08:00",
+                    "end": "16:00"
+                },
+                {
+                    "store_id": 1,
+                    "day": 5,
+                    "off_work": false,
+                    "start": "08:00",
+                    "end": "16:00"
+                },
+                {
+                    "store_id": 1,
+                    "day": 6,
+                    "off_work": false,
+                    "start": "09:00",
+                    "end": "17:00"
+                }
+            ]
+        },
+        {
+            "name": "Dimitris Diavatis",
+            "telephone": "6979258831",
+            "email": "diavatis@flexbook.gr",
+            "password": "12345",
+            "roles": ["staff"],
+            "work_hours": [
+                {
+                    "store_id": 1,
+                    "day": 1,
+                    "off_work": false,
+                    "start": "08:00",
+                    "end": "12:00"
+                },
+                {
+                    "store_id": 1,
+                    "day": 1,
+                    "off_work": false,
+                    "start": "16:00",
+                    "end": "20:00"
+                },
+                {
+                    "store_id": 1,
+                    "day": 2,
+                    "off_work": true,
+                    "start": null,
+                    "end": null
+                },
+                {
+                    "store_id": 1,
+                    "day": 3,
+                    "off_work": false,
+                    "start": "12:00",
+                    "end": "20:00"
+                },
+                {
+                    "store_id": 1,
+                    "day": 4,
+                    "off_work": false,
+                    "start": "12:00",
+                    "end": "20:00"
+                },
+                {
+                    "store_id": 1,
+                    "day": 5,
+                    "off_work": false,
+                    "start": "08:00",
+                    "end": "12:00"
+                },
+                {
+                    "store_id": 1,
+                    "day": 5,
+                    "off_work": false,
+                    "start": "16:00",
+                    "end": "20:00"
+                },
+                {
+                    "store_id": 1,
+                    "day": 6,
+                    "off_work": false,
+                    "start": "09:00",
+                    "end": "17:00"
+                }
+            ]
+        }
+    ],
+    "service_groups": [
+        {
+            "name": "HAIRCUTS",
+            "description": null
+        },
+        {
+            "name": "FACE SHAVING",
+            "description": null
+        },
+        {
+            "name": "THREADING",
+            "description": null
+        },
+        {
+            "name": "HEAD SHAVING",
+            "description": null
+        },
+        {
+            "name": "BEARD",
+            "description": null
+        },
+        {
+            "name": "HAIR TECHNIQUES",
+            "description": null
+        },
+        {
+            "name": "HAIR TREATMENTS",
+            "description": null
+        },
+        {
+            "name": "HOLISTIC THERAPIES",
+            "description": null
+        },
+        {
+            "name": "MASSAGE TREATMENTS",
+            "description": null
+        }
+    ],
+    "services": [
+        {
+            "name": "Classic",
+            "description": null,
+            "default_price": 13,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [1]
+        },
+        {
+            "name": "Modern",
+            "description": null,
+            "default_price": 15,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [1]
+        },
+        {
+            "name": "Exclusive",
+            "description": null,
+            "default_price": 17,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [1]
+        },
+        {
+            "name": "Kids",
+            "description": null,
+            "default_price": 11,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [1]
+        },
+        {
+            "name": "Long Hair",
+            "description": null,
+            "default_price": 17,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [1]
+        },
+        {
+            "name": "Περιποίηση Αυχένα",
+            "description": null,
+            "default_price": 6,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [1]
+        },
+        {
+            "name": "Ferentinos Experience",
+            "description": null,
+            "default_price": 69,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [1]
+        },
+        {
+            "name": "Clasic",
+            "description": null,
+            "default_price": 9,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [2]
+        },
+        {
+            "name": "Exclusive",
+            "description": null,
+            "default_price": 14,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [2]
+        },
+        {
+            "name": "Κλωστή ζυγωματικά",
+            "description": null,
+            "default_price": 5,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [3]
+        },
+        {
+            "name": "Κλωστή όλο το πρόσωπο",
+            "description": null,
+            "default_price": 7,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [3]
+        },
+        {
+            "name": "Shaver",
+            "description": null,
+            "default_price": 13,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [4]
+        },
+        {
+            "name": "Φαλτσέτα",
+            "description": null,
+            "default_price": 18,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [4]
+        },
+        {
+            "name": "Clasic",
+            "description": null,
+            "default_price": 7,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [5]
+        },
+        {
+            "name": "Exclusive",
+            "description": "Περιλαμβάνεται παροχή κλωστής",
+            "default_price": 12,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [5]
+        },
+        {
+            "name": "Hair Dye",
+            "description": null,
+            "default_price": 35,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [6]
+        },
+        {
+            "name": "Beard Dye",
+            "description": null,
+            "default_price": 10,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [6]
+        },
+        {
+            "name": "Silver",
+            "description": null,
+            "default_price": 5,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [6]
+        },
+        {
+            "name": "Pernament",
+            "description": null,
+            "default_price": 40,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [6]
+        },
+        {
+            "name": "Straightening",
+            "description": null,
+            "default_price": 40,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [6]
+        },
+        {
+            "name": "Anti dandruff",
+            "description": null,
+            "default_price": 10,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [7]
+        },
+        {
+            "name": "Anti hair loss",
+            "description": null,
+            "default_price": 10,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [7]
+        },
+        {
+            "name": "Λούσιμο (μεμονωμένη υπηρεσία)",
+            "description": null,
+            "default_price": 5,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [7]
+        },
+        {
+            "name": "Λούσιμο (συνδυαστικά με άλλη υπηρεσία)",
+            "description": "Περιλαμβάνεται παροχή κλωστής",
+            "default_price": 2,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [7]
+        },
+        {
+            "name": "Anti hair loss",
+            "description": null,
+            "default_price": 10,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [8]
+        },
+        {
+            "name": "Λούσιμο (μεμονωμένη υπηρεσία)",
+            "description": null,
+            "default_price": 5,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [8]
+        },
+        {
+            "name": "Λούσιμο (συνδυαστικά με άλλη υπηρεσία)",
+            "description": "Περιλαμβάνεται παροχή κλωστής",
+            "default_price": 2,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [8]
+        }
+    ]
+}

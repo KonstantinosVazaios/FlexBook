@@ -17,10 +17,10 @@ return new class extends Migration
             $table->unsignedBigInteger('staff_id')->nullable();
             $table->unsignedBigInteger('service_id')->nullable();
             $table->text('service_name');
-            $table->integer('duration');
             $table->float('price');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
+            $table->integer('sort_index');
             $table->softDeletes();
 
             $table->foreign('reservation_id')->references('id')->on('users')->onDelete('cascade');

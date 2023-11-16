@@ -15,13 +15,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-
-    protected static ?string $modelLabel = 'Χρήστη';
-    protected static ?string $pluralModelLabel = 'Χρήστες';
 
     protected static ?string $navigationLabel = 'Χρήστες';
 
@@ -47,7 +45,7 @@ class UserResource extends Resource
         if ($record->hasRoles('admin') && auth()->user()->id !== $record->id) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -64,14 +62,18 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('telephone')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                    ->dehydrated(fn (?string $state): bool => filled($state))
+                    ->required(fn (string $operation): bool => $operation === 'create'),
             ]);
     }
 
@@ -80,6 +82,8 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('telephone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),

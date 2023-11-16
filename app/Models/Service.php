@@ -19,6 +19,11 @@ class Service extends Model
         'active'
     ];
 
+    public function serviceGroups()
+    {
+        return $this->belongsToMany(ServiceGroup::class);
+    }
+
     public function stores()
     {
         return $this->belongsToMany(Store::class, 'service_store')
