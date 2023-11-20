@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReservationResource\Pages;
+use App\Filament\Resources\ReservationResource\Widgets;
 use App\Filament\Resources\ReservationResource\RelationManagers;
 use App\Models\Reservation;
 use Filament\Forms;
@@ -34,6 +35,15 @@ class ReservationResource extends Resource
     {
         return true;
     }
+
+    public static function getWidgets(): array
+    {
+        return [
+            Widgets\ReservationsCalendarWidget::class,
+        ];
+    }
+
+
 
     public static function form(Form $form): Form
     {
