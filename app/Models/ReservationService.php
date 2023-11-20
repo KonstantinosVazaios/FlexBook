@@ -15,8 +15,7 @@ class ReservationService extends Model
         'service_id',
         'service_name',
         'price',
-        // 'start_time',
-        // 'end_time',
+        'sort_index'
     ];
 
     public function reservation()

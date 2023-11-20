@@ -49,6 +49,11 @@ class UserResource extends Resource
         return true;
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -63,6 +68,7 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('telephone')
+                    ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()

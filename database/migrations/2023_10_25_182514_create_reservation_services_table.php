@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('sort_index');
             $table->softDeletes();
 
-            $table->foreign('reservation_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('cascade');
             $table->foreign('staff_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('service_id')->references('id')->on('services')->onDelete('set null');
             $table->timestamps();

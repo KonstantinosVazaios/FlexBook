@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ReservationResource\Widgets;
 use App\Models\Reservation;
 use App\Models\Service;
 use App\Models\User;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Widgets\Widget;
 use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
@@ -12,14 +13,26 @@ use Filament\Forms;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Saade\FilamentFullCalendar\Actions;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ReservationsCalendarWidget extends FullCalendarWidget
 {
     public Model | string | null $model = Reservation::class;
+
+    protected function getFormModel(): Model|string|null
+    {
+        return $this->event ?? Reservation::class;
+    }
+
+    public function resolveEventRecord(array $data): Reservation
+    {
+        return Reservation::find($data['id']);
+    }
 
     protected function headerActions(): array
     {
@@ -33,7 +46,30 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                 }
             )
             ->using(function (array $data, string $model): Model {
-                dd($data);
+                $startDate = Carbon::parse($data['date'] . ' ' . $data['start_date'])->format('Y-m-d H:i:s');
+                $endDate = Carbon::parse($data['date'] . ' ' . $data['end_date'])->format('Y-m-d H:i:s');
+
+                $user = User::find($data['user_id']);
+
+                if (!$user) {
+                    Notification::make()
+                        ->warning()
+                        ->title('Customer not found')
+                        ->body('Please select a customer from the dropdown')
+                        ->send();
+                    $this->halt();
+                }
+
+                $reservation = Reservation::create([
+                    "store_id" => 1,
+                    "user_id" => $user->id,
+                    "name" => $user->name,
+                    "telephone" => $user->telephone,
+                    "start_date" => $startDate,
+                    "end_date" => $endDate
+                ]);
+
+                return $reservation;
             })
         ];
     }
@@ -41,14 +77,60 @@ class ReservationsCalendarWidget extends FullCalendarWidget
     protected function modalActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()
+            ->mountUsing(
+                function (Forms\Form $form) {
+                    $form->fill([
+                        'date' => $form->model->start_date ?? null,
+                        'start_date' => $form->model->start_date ?? null,
+                        'end_date' => $form->model->end_date ?? null,
+                        'user_id' => $form->model->user_id
+                    ]);
+                }
+            )
+            ->using(function (Model $record, array $data): Model {
+                $startDate = Carbon::parse($data['date'] . ' ' . $data['start_date'])->format('Y-m-d H:i:s');
+                $endDate = Carbon::parse($data['date'] . ' ' . $data['end_date'])->format('Y-m-d H:i:s');
+
+                $user = User::find($data['user_id']);
+
+                if (!$user) {
+                    Notification::make()
+                        ->warning()
+                        ->title('Customer not found')
+                        ->body('Please select a customer from the dropdown')
+                        ->send();
+                    $this->halt();
+                }
+
+                $record->update([
+                    "store_id" => 1,
+                    "user_id" => $user->id,
+                    "name" => $user->name,
+                    "telephone" => $user->telephone,
+                    "start_date" => $startDate,
+                    "end_date" => $endDate
+                ]);
+
+                return $record;
+            }),
             Actions\DeleteAction::make(),
         ];
     }
 
     protected function viewAction(): Action
     {
-        return Actions\ViewAction::make();
+        return Actions\ViewAction::make()
+                ->mountUsing(
+                    function (Forms\Form $form) {
+                        $form->fill([
+                            'date' => $form->model->start_date ?? null,
+                            'start_date' => $form->model->start_date ?? null,
+                            'end_date' => $form->model->end_date ?? null,
+                            'user_id' => $form->model->user_id
+                        ]);
+                    }
+                );
     }
 
     public function fetchEvents(array $fetchInfo): array
@@ -59,8 +141,8 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                 fn (Reservation $reservation) => [
                     'id' => $reservation->id,
                     'title' => $reservation->name,
-                    'start' => '2023-11-16 18:30:00',
-                    'end' => '2023-11-16 20:30:00',
+                    'start' => $reservation->start_date,
+                    'end' => $reservation->end_date,
                     'shouldOpenUrlInNewTab' => false
                 ]
             )
@@ -70,10 +152,10 @@ class ReservationsCalendarWidget extends FullCalendarWidget
     public function getFormSchema(): array
     {
         return [
-            Forms\Components\DatePicker::make('date')->label("Ημερομηνία")->native(false),
+            Forms\Components\DatePicker::make('date')->label("Ημερομηνία")->native(false)->hidden(fn (string $operation): bool => $operation === 'edit'),
             Grid::make()->schema([
-                Forms\Components\TimePicker::make('start_time')->label("ΑΠΟ")->native(false)->seconds(false)->minutesStep(15),
-                Forms\Components\TimePicker::make('end_time')->label("ΕΩΣ")->native(false)->seconds(false)->minutesStep(15),
+                Forms\Components\TimePicker::make('start_date')->label("ΑΠΟ")->native(false)->seconds(false)->minutesStep(15),
+                Forms\Components\TimePicker::make('end_date')->label("ΕΩΣ")->native(false)->seconds(false)->minutesStep(15),
             ]),
             Forms\Components\Select::make('user_id')
                 ->label('Πελάτης')
@@ -86,6 +168,7 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                     Forms\Components\TextInput::make('name')
                         ->required(),
                     Forms\Components\TextInput::make('telephone')
+                        ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('email')
                         ->required()
@@ -100,8 +183,10 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                     ]);
 
                     $user->roles()->attach(4);
-                }),
+                })
+                ->required(),
             Forms\Components\Repeater::make('services')
+                ->relationship()
                 ->schema([
                     Forms\Components\Select::make('service_id')
                         ->label('Υπηρεσία')
@@ -124,11 +209,20 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                         ->searchable()
                         ->required(),
                 ])
+                ->defaultItems(1)
                 ->label('Υπηρεσίες')
                 ->required()
                 ->reorderableWithDragAndDrop(false)
                 ->addActionLabel('ΠΡΟΣΘΗΚΗ')
                 ->columns(2)
+                ->orderColumn('sort_index')
+                ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
+                    $service = Service::find($data["service_id"]);
+                    $data["service_name"] = $service->name;
+                    $data["price"] = $service->default_price;
+
+                    return $data;
+                })
         ];
     }
 }

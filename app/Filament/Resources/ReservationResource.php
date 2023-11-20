@@ -6,6 +6,7 @@ use App\Filament\Resources\ReservationResource\Pages;
 use App\Filament\Resources\ReservationResource\Widgets;
 use App\Filament\Resources\ReservationResource\RelationManagers;
 use App\Models\Reservation;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationGroup;
@@ -36,13 +37,17 @@ class ReservationResource extends Resource
         return true;
     }
 
-    public static function getWidgets(): array
+    public static function getNavigationBadge(): ?string
     {
-        return [
-            Widgets\ReservationsCalendarWidget::class,
-        ];
+        return static::getModel()::whereDate('start_date', '>=', Carbon::now())->count();
     }
 
+    // public static function getWidgets(): array
+    // {
+    //     return [
+    //         Widgets\ReservationsCalendarWidget::class,
+    //     ];
+    // }
 
 
     public static function form(Form $form): Form
@@ -80,7 +85,10 @@ class ReservationResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('telephone')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('date')
+                Tables\Columns\TextColumn::make('start')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -119,7 +127,7 @@ class ReservationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListReservations::route('/'),
+            'index' => Pages\CalendarReservations::route('/'),
             'create' => Pages\CreateReservation::route('/create'),
             'edit' => Pages\EditReservation::route('/{record}/edit'),
         ];

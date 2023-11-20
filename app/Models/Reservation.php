@@ -16,11 +16,12 @@ class Reservation extends Model
         'user_id',
         'name',
         'telephone',
-        'reservation_date',
+        "start_date",
+        "end_date"
     ];
 
     public function services()
     {
-        return $this->hasMany(Service::class);
+        return $this->hasMany(ReservationService::class);
     }
 }

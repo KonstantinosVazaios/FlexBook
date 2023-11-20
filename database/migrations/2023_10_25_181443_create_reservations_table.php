@@ -17,9 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('name');
             $table->string('telephone');
-            $table->date('date');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
 
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
