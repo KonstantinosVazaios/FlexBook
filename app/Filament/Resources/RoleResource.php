@@ -19,11 +19,11 @@ class RoleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
 
-    public static function canViewAny() : bool 
+    public static function canViewAny() : bool
     {
         return auth()->user()->hasRoles('developer');
     }
-    
+
     public static function canCreate(): bool
     {
         return false;
@@ -67,12 +67,12 @@ class RoleResource extends Resource
             RelationManagers\PermissionsRelationManager::class,
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListRoles::route('/'),
             'view' => Pages\ViewRole::route('/{record}'),
         ];
-    }    
+    }
 }

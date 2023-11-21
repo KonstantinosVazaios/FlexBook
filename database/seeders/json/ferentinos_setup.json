@@ -5,52 +5,52 @@
         "address": "Ζαχαρία Παπαντωνίου 19, Αθήνα 111 45",
         "telephone": "21 0832 0188",
         "email": "losbarberos@gmail.com",
-        "active": true
+        "active": true,
+        "store_hours": [
+            {
+                "day": 1,
+                "is_open": true,
+                "open": "08:00",
+                "close": "20:00"
+            },
+            {
+                "day": 2,
+                "is_open": true,
+                "open": "08:00",
+                "close": "20:00"
+            },
+            {
+                "day": 3,
+                "is_open": true,
+                "open": "08:00",
+                "close": "20:00"
+            },
+            {
+                "day": 4,
+                "is_open": true,
+                "open": "08:00",
+                "close": "20:00"
+            },
+            {
+                "day": 5,
+                "is_open": true,
+                "open": "08:00",
+                "close": "20:00"
+            },
+            {
+                "day": 6,
+                "is_open": true,
+                "open": "09:00",
+                "close": "17:00"
+            },
+            {
+                "day": 0,
+                "is_open": false,
+                "open": null,
+                "close": null
+            }
+        ]
     },
-    "store_hours": [
-        {
-            "day": 1,
-            "is_open": true,
-            "open": "08:00",
-            "close": "20:00"
-        },
-        {
-            "day": 2,
-            "is_open": true,
-            "open": "08:00",
-            "close": "20:00"
-        },
-        {
-            "day": 3,
-            "is_open": true,
-            "open": "08:00",
-            "close": "20:00"
-        },
-        {
-            "day": 4,
-            "is_open": true,
-            "open": "08:00",
-            "close": "20:00"
-        },
-        {
-            "day": 5,
-            "is_open": true,
-            "open": "08:00",
-            "close": "20:00"
-        },
-        {
-            "day": 6,
-            "is_open": true,
-            "open": "09:00",
-            "close": "17:00"
-        },
-        {
-            "day": 0,
-            "is_open": false,
-            "open": null,
-            "close": null
-        }
-    ],
     "users": [
         {
             "name": "Nikos Ferentinos",
@@ -402,35 +402,59 @@
         },
         {
             "name": "Λούσιμο (συνδυαστικά με άλλη υπηρεσία)",
-            "description": "Περιλαμβάνεται παροχή κλωστής",
+            "description": "",
             "default_price": 2,
             "default_duration": 30,
             "active": true,
             "service_groups_ids": [7]
         },
         {
-            "name": "Anti hair loss",
+            "name": "Καθαρισμός προσώπου με face brush & vacuum ή xpreem",
             "description": null,
-            "default_price": 10,
+            "default_price": 25,
             "default_duration": 30,
             "active": true,
             "service_groups_ids": [8]
         },
         {
-            "name": "Λούσιμο (μεμονωμένη υπηρεσία)",
+            "name": "Express face cleancing",
             "description": null,
-            "default_price": 5,
+            "default_price": 18,
             "default_duration": 30,
             "active": true,
             "service_groups_ids": [8]
         },
         {
-            "name": "Λούσιμο (συνδυαστικά με άλλη υπηρεσία)",
-            "description": "Περιλαμβάνεται παροχή κλωστής",
-            "default_price": 2,
+            "name": "Beard deep conditioning masque treatment",
+            "description": "",
+            "default_price": 23,
             "default_duration": 30,
             "active": true,
             "service_groups_ids": [8]
+        },
+        {
+            "name": "Aroma face massage",
+            "description": null,
+            "default_price": 12,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [9]
+        },
+        {
+            "name": "Massage αυχένα & ώμων",
+            "description": null,
+            "default_price": 15,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [9]
+        },
+        {
+            "name": "Guasha facial & jade roller",
+            "description": "",
+            "default_price": 15,
+            "default_duration": 30,
+            "active": true,
+            "service_groups_ids": [9]
         }
     ]
 }

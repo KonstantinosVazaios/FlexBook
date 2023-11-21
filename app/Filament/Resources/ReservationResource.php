@@ -23,6 +23,10 @@ class ReservationResource extends Resource
 
     protected static ?string $navigationLabel = 'Ραντεβού';
 
+    protected static ?string $modelLabel = 'ραντεβού';
+
+    protected static ?string $pluralModelLabel = 'Ραντεβού';
+
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     protected static ?int $navigationSort = 0;

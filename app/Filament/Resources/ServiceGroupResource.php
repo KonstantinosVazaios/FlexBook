@@ -19,6 +19,10 @@ class ServiceGroupResource extends Resource
 
     protected static ?string $navigationLabel = 'Κατηγορίες';
 
+    protected static ?string $modelLabel = 'κατηγορίας';
+
+    protected static ?string $pluralModelLabel = 'Κατηγορίες';
+
     protected static ?string $navigationIcon = 'heroicon-o-bars-2';
 
     protected static ?int $navigationSort = 2;

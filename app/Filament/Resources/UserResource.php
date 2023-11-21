@@ -23,6 +23,10 @@ class UserResource extends Resource
 
     protected static ?string $navigationLabel = 'Χρήστες';
 
+    protected static ?string $modelLabel = 'χρήστη';
+
+    protected static ?string $pluralModelLabel = 'Χρήστες';
+
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?int $navigationSort = 0;

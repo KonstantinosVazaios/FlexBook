@@ -21,6 +21,10 @@ class StoreResource extends Resource
 
     protected static ?string $navigationLabel = 'Καταστήματα';
 
+    protected static ?string $modelLabel = 'καταστήματος';
+
+    protected static ?string $pluralModelLabel = 'Καταστήματα';
+
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
     protected static ?int $navigationSort = 1;
@@ -40,7 +44,7 @@ class StoreResource extends Resource
         if (auth()->user()->stores()->wherePivot('role_id', 2)->get()->isNotEmpty()) {
             return true;
         }
-        
+
         return false;
     }
 

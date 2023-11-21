@@ -19,6 +19,10 @@ class ServiceResource extends Resource
 
     protected static ?string $navigationLabel = 'Υπηρεσίες';
 
+    protected static ?string $modelLabel = 'υπηρεσίας';
+
+    protected static ?string $pluralModelLabel = 'Υπηρεσίες';
+
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?int $navigationSort = 3;
