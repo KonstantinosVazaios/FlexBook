@@ -29,7 +29,8 @@ class ServiceResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->hasRoles('developer', 'admin');
+        return false;
+        // return auth()->user()->hasRoles('developer', 'admin');
     }
 
     public static function form(Form $form): Form

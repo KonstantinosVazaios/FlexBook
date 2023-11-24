@@ -17,11 +17,11 @@ class ServiceGroupResource extends Resource
 {
     protected static ?string $model = ServiceGroup::class;
 
-    protected static ?string $navigationLabel = 'Κατηγορίες';
+    protected static ?string $navigationLabel = 'Κατηγορίες Υπηρεσιών';
 
     protected static ?string $modelLabel = 'κατηγορίας';
 
-    protected static ?string $pluralModelLabel = 'Κατηγορίες';
+    protected static ?string $pluralModelLabel = 'Κατηγορίες Υπηρεσιών';
 
     protected static ?string $navigationIcon = 'heroicon-o-bars-2';
 
