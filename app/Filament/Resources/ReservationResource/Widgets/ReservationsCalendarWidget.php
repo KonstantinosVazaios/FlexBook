@@ -4,7 +4,9 @@ namespace App\Filament\Resources\ReservationResource\Widgets;
 
 use App\Models\Reservation;
 use App\Models\Service;
+use App\Models\ServiceGroup;
 use App\Models\User;
+use App\Services\ReservationAvailabilityCalculator;
 use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Widgets\Widget;
@@ -24,6 +26,8 @@ class ReservationsCalendarWidget extends FullCalendarWidget
 {
     public Model | string | null $model = Reservation::class;
 
+    private int $storeId = 1;
+
     protected function getFormModel(): Model|string|null
     {
         return $this->event ?? Reservation::class;
@@ -40,6 +44,19 @@ class ReservationsCalendarWidget extends FullCalendarWidget
             Actions\CreateAction::make()
             ->mountUsing(
                 function (Forms\Form $form, array $arguments) {
+                    if (!array_key_exists('start', $arguments)) return;
+
+                    $selectedDate = (new Carbon($arguments['start']))->format('Y-m-d');
+                    $storeIsOpen = ReservationAvailabilityCalculator::isStoreAvailableOnDate($this->storeId, $selectedDate);
+
+                    if (!$storeIsOpen) {
+                         Notification::make()
+                            ->warning()
+                            ->title('Το κατάστημα δεν είναι ανοιχτό την επιλεγμένη ημερομηνία')
+                            ->body('Διαλέξτε άλλη ημερομηνία για το ραντεβού.')
+                            ->send();
+                    }
+
                     $form->fill([
                         'date' => $arguments['start'] ?? null,
                     ]);
@@ -57,7 +74,7 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                         ->title('Customer not found')
                         ->body('Please select a customer from the dropdown')
                         ->send();
-                    $this->halt();
+                    return null;
                 }
 
                 $reservation = Reservation::create([
@@ -100,11 +117,11 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                         ->title('Customer not found')
                         ->body('Please select a customer from the dropdown')
                         ->send();
-                    $this->halt();
+                    return $record;
                 }
 
                 $record->update([
-                    "store_id" => 1,
+                    "store_id" =>$this->storeId,
                     "user_id" => $user->id,
                     "name" => $user->name,
                     "telephone" => $user->telephone,
@@ -152,10 +169,22 @@ class ReservationsCalendarWidget extends FullCalendarWidget
     public function getFormSchema(): array
     {
         return [
-            Forms\Components\DatePicker::make('date')->label("Ημερομηνία")->native(false)->hidden(fn (string $operation): bool => $operation === 'edit'),
+            Forms\Components\DatePicker::make('date')->label("Ημερομηνία")->native(false)->disabledDates(ReservationAvailabilityCalculator::getUnavailableDatesForStore($this->storeId))->hidden(fn (string $operation): bool => $operation === 'edit'),
             Grid::make()->schema([
-                Forms\Components\TimePicker::make('start_date')->label("ΑΠΟ")->native(false)->seconds(false)->minutesStep(15),
-                Forms\Components\TimePicker::make('end_date')->label("ΕΩΣ")->native(false)->seconds(false)->minutesStep(15),
+                Forms\Components\Select::make('start_date')
+                ->label('ΑΠΟ')
+                ->options(function (Get $get) {
+                    $availableHours = ReservationAvailabilityCalculator::getAvailableHoursForStore($this->storeId, (new Carbon($get('date')))->format('Y-m-d'));
+                    return array_combine($availableHours, $availableHours);
+                })
+                ->searchable(),
+                Forms\Components\Select::make('end_date')
+                ->label('ΕΩΣ')
+                ->options(function (Get $get) {
+                    $availableHours = ReservationAvailabilityCalculator::getAvailableHoursForStore($this->storeId, (new Carbon($get('date')))->format('Y-m-d'));
+                    return array_combine($availableHours, $availableHours);
+                })
+                ->searchable()
             ]),
             Forms\Components\Select::make('user_id')
                 ->label('Πελάτης')
@@ -183,6 +212,8 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                     ]);
 
                     $user->roles()->attach(4);
+
+                    return $user;
                 })
                 ->required(),
             Forms\Components\Repeater::make('services')
@@ -209,7 +240,6 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                         ->searchable()
                         ->required(),
                 ])
-                ->defaultItems(1)
                 ->label('Υπηρεσίες')
                 ->required()
                 ->reorderableWithDragAndDrop(false)

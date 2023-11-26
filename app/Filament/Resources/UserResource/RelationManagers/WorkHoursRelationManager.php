@@ -38,7 +38,7 @@ class WorkHoursRelationManager extends RelationManager
                         '4' => 'Thursday',
                         '5' => 'Friday',
                         '6' => 'Saturday',
-                        '0' => 'Sunday',
+                        '7' => 'Sunday',
                     ])->required(),
                 Forms\Components\TimePicker::make('start')->native(false)->seconds(false)->minutesStep(15),
                 Forms\Components\TimePicker::make('end')->native(false)->seconds(false)->minutesStep(15),
@@ -50,6 +50,8 @@ class WorkHoursRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('day')
+            ->modelLabel("Ωραρίου")
+            ->pluralModelLabel("Ωράρια Εργασίας")
             ->columns([
                 Tables\Columns\TextColumn::make('storeName')->label('Store'),
                 Tables\Columns\TextColumn::make('dayLabel')->label('Day'),

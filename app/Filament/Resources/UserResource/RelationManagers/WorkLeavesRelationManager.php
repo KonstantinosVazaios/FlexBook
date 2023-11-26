@@ -34,6 +34,8 @@ class WorkLeavesRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('date')
+            ->modelLabel("Άδειας | Ρεπό")
+            ->pluralModelLabel("Άδειες | Ρεπό")
             ->columns([
                 Tables\Columns\TextColumn::make('date'),
             ])

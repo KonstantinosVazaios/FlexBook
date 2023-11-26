@@ -9,13 +9,13 @@ class StoreHour extends Model
 {
     use HasFactory;
 
-    // 0 SUNDAY
     // 1 MONDAY
     // 2 TUESDAY
     // 3 WEDNESDAY
     // 4 THURSDAY
     // 5 FRIDAY
     // 6 SATURDAY
+    // 7 SUNDAY
 
     protected $fillable = [
         'day',
@@ -26,9 +26,9 @@ class StoreHour extends Model
 
     public function getDayLabelAttribute()
     {
-        $days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-        return $days[$this->day];
+        return $days[$this->day - 1];
     }
 
     public function store()

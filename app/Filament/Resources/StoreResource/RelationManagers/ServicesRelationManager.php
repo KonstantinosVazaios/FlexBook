@@ -32,6 +32,8 @@ class ServicesRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('name')
+            ->modelLabel("υπηρεσίας")
+            ->pluralModelLabel("Υπηρεσίες")
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('override_price'),

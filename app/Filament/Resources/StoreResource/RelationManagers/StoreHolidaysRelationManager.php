@@ -29,6 +29,8 @@ class StoreHolidaysRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('date')
+            ->modelLabel("Αργίας")
+            ->pluralModelLabel("Αργίες")
             ->columns([
                 Tables\Columns\TextColumn::make('date'),
                 Tables\Columns\IconColumn::make('is_open')->boolean(),

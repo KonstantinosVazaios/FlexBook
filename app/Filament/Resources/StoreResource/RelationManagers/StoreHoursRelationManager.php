@@ -26,7 +26,7 @@ class StoreHoursRelationManager extends RelationManager
                         '4' => 'Thursday',
                         '5' => 'Friday',
                         '6' => 'Saturday',
-                        '0' => 'Sunday',
+                        '7' => 'Sunday',
                     ])->required(),
                 Forms\Components\TimePicker::make('open')->native(false)->seconds(false)->minutesStep(15),
                 Forms\Components\TimePicker::make('close')->native(false)->seconds(false)->minutesStep(15),
@@ -38,6 +38,8 @@ class StoreHoursRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('dayLabel')
+            ->modelLabel("Ωραρίου")
+            ->pluralModelLabel("Ωράρια Εργασίας")
             ->columns([
                 Tables\Columns\TextColumn::make('dayLabel'),
                 Tables\Columns\IconColumn::make('is_open')->boolean(),
