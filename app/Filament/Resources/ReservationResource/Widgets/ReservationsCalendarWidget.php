@@ -99,8 +99,8 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                 function (Forms\Form $form) {
                     $form->fill([
                         'date' => $form->model->start_date ?? null,
-                        'start_date' => $form->model->start_date ?? null,
-                        'end_date' => $form->model->end_date ?? null,
+                        'start_date' => Carbon::parse($form->model->start_date ?? null)->format('H:i'),
+                        'end_date' => Carbon::parse($form->model->end_date ?? null)->format('H:i'),
                         'user_id' => $form->model->user_id
                     ]);
                 }
@@ -142,8 +142,8 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                     function (Forms\Form $form) {
                         $form->fill([
                             'date' => $form->model->start_date ?? null,
-                            'start_date' => $form->model->start_date ?? null,
-                            'end_date' => $form->model->end_date ?? null,
+                            'start_date' => Carbon::parse($form->model->start_date ?? null)->format('H:i'),
+                            'end_date' => Carbon::parse($form->model->end_date ?? null)->format('H:i'),
                             'user_id' => $form->model->user_id
                         ]);
                     }
@@ -199,16 +199,11 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                     Forms\Components\TextInput::make('telephone')
                         ->required()
                         ->maxLength(255),
-                    Forms\Components\TextInput::make('email')
-                        ->required()
-                        ->email(),
                 ])
                 ->createOptionUsing(function ($data) {
                     $user = User::create([
                         'name' => $data['name'],
-                        'email' => $data['email'],
-                        'telephone' => $data['telephone'],
-                        'password' => Hash::make('12345678')
+                        'telephone' => $data['telephone']
                     ]);
 
                     $user->roles()->attach(4);

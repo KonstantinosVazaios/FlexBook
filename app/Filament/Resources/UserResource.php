@@ -76,14 +76,15 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
-                    ->required()
-                    ->maxLength(255),
+                    ->unique()
+                    ->maxLength(255)
+                    ->autocomplete(false),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->maxLength(255)
                     ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
                     ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
+                    ->autocomplete(false),
             ]);
     }
 
