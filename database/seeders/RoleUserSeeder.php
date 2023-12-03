@@ -17,7 +17,5 @@ class RoleUserSeeder extends Seeder
         // 2: ADMIN
         // 3: STAFF
         // 4: CLIENT
-        
-        User::find(1)->roles()->attach(1);
     }
 }

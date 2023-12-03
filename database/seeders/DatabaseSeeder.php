@@ -28,6 +28,16 @@ class DatabaseSeeder extends Seeder
             RoleUserSeeder::class,
         ]);
 
+        $superadmin = User::create([
+            'name' => 'Konstantinos Vazaios',
+            'email' => 'vazaios@flexbook.gr',
+            'email_verified_at' => now(),
+            'password' => Hash::make('flexbook'),
+        ]);
+
+        $superadmin->roles()->attach(1);
+
+
         Setting::create([
             "parameter" => "BOOKING_INTERVAL",
             "value" => "30"

@@ -188,11 +188,8 @@ class ReservationsCalendarWidget extends FullCalendarWidget
             ]),
             Forms\Components\Select::make('user_id')
                 ->label('Πελάτης')
-                ->options(User::query()
-                    ->whereHas('roles', function (Builder $query) {
-                        $query->where('code', 'client');
-                    })->pluck('name', 'id'))
-                ->searchable()
+                ->relationship(name: 'user', titleAttribute: 'name')
+                ->searchable(['name', 'telephone'])
                 ->createOptionForm([
                     Forms\Components\TextInput::make('name')
                         ->required(),
@@ -213,28 +210,34 @@ class ReservationsCalendarWidget extends FullCalendarWidget
                 ->required(),
             Forms\Components\Repeater::make('services')
                 ->relationship()
-                ->schema([
-                    Forms\Components\Select::make('service_id')
-                        ->label('Υπηρεσία')
-                        ->options(Service::all()->pluck('name', 'id'))
-                        ->searchable()
-                        ->required(),
-                    Forms\Components\Select::make('staff_id')
-                        ->label('Εργαζόμενος')
-                        ->options(function (Get $get) {
-                            $serviceId = $get('service_id');
-                            return User::query()
-                            ->whereHas('roles', function (Builder $query) {
-                                $query->where('code', 'staff');
+                ->schema(function (Get $get) {
+                    $date = $get('date');
+                    return [
+                        Forms\Components\Select::make('service_id')
+                            ->label('Υπηρεσία')
+                            ->options(Service::all()->pluck('name', 'id'))
+                            ->searchable()
+                            ->required(),
+                        Forms\Components\Select::make('staff_id')
+                            ->label('Εργαζόμενος')
+                            ->options(function (Get $get) use ($date) {
+                                $serviceId = $get('service_id');
+                                return User::query()
+                                ->whereHas('roles', function (Builder $query) {
+                                    $query->where('code', 'staff');
+                                })
+                                ->whereHas('services', function (Builder $query) use ($serviceId) {
+                                    $query->where('services.id', $serviceId);
+                                })
+                                ->whereDoesntHave('workLeaves', function (Builder $query) use ($date) {
+                                    $query->whereDate('date', $date);
+                                })
+                                ->pluck('name', 'id');
                             })
-                            ->whereHas('services', function (Builder $query) use ($serviceId) {
-                                $query->where('services.id', $serviceId);
-                            })
-                            ->pluck('name', 'id');
-                        })
-                        ->searchable()
-                        ->required(),
-                ])
+                            ->searchable()
+                            ->required(),
+                    ];
+                })
                 ->label('Υπηρεσίες')
                 ->required()
                 ->reorderableWithDragAndDrop(false)
